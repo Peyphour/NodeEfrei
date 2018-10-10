@@ -9,6 +9,7 @@ The application will be a real-time chat. The following features will be part of
 - Platform agnostic (no dependencies apart from NodeJS)
 - Real time
 - Unlimited simultaneous users and channels
+- Persistent storage
 - Chat features : user mentions, commands, search (users, channels and messages)
 
 ## Conception
@@ -19,6 +20,7 @@ Each feature will be implemented with a specific technology:
 - Real time : We will use websockets
 - Unlimited users and channels : the only limit will be the capacity of the container as it is only a memory and CPU problem.
     We will try to optimise as much as possible the application though.
+- Persistent storage: we will use SQLite. The reason for this is to facilitate importation and exportation of data, and Docker use. The database file will be stored on the container's host.
 
 The backend will be pure NodeJS using Express as web server, and Socket.IO as websocket server
 The frontend will be made using Bootstrap. Handlebars will be used as a templating engine.
