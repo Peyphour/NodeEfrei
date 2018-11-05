@@ -1,0 +1,24 @@
+<h2>Channels:</h2>
+<div id="channels"></div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    let userinfos, channels = [];
+    $(document).ready(() => {
+      if(document.cookie.length === 0)
+        window.location = '/'
+        const socket = io();
+        socket.emit('login', Cookies.get('token'))
+        socket.emit('channels-request')
+        socket.on('user info', (msg) => {
+          userinfos = msg;
+        })
+        socket.on('channels', (msg) => {
+          console.log(msg);
+          for(let channel of msg) {
+            $("#channels").append(`<a href='/chat/${channel.channel}'>${channel.channel}</a><br />`)
+          }
+        })
+    })
+</script>

@@ -1,2 +1,38 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
+
+<form>
+    <label for="username">Username:</label>
+    <input type="text" id="username" />
+    <label for="password">Password:</label>
+    <input type="password" id="password" />
+    <input type="button" value="Login" onclick="login()" />
+    <input type="button" value="Create account" onclick="createAccount()" />
+</form>
+
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    function login() {
+      const username = $("#username").val();
+      const password = $("#password").val();
+      $.ajax({
+          url: '/chat/login',
+          method: 'POST',
+          data: JSON.stringify({
+            username: username,
+            password: password
+          }),
+          dataType: 'json',
+          contentType: 'application/json',
+          success: (data) => {
+              if(data.token) {
+                  document.cookie = `token=${data.token}`
+                  window.location = '/chat'
+              }
+          },
+          error: (jqxhr, text, err) => {
+              alert('Login failed ' + text)
+          }
+      })
+    }
+</script>
