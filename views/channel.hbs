@@ -1,0 +1,27 @@
+<h2>Channel {{channel}}</h2>
+
+<div id="channel-content"></div>
+<input type="text" id="msg" />
+<input type="button" value="Send" id="send" />
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    $(document).ready(() => {
+        const socket = io()
+        $("#send").click(() => {
+            socket.emit('channel-message', {
+                token: Cookies.get('token'),
+                channel: '{{channel}}',
+                content: $("#msg").val()
+            })
+            $("#msg").val('')
+        })
+        socket.emit('channel-messages-request', {channel: '{{channel}}'})
+        socket.on('channel-message', (msg) => {
+            console.log(msg)
+            if (msg.channel === '{{channel}}')
+                $("#channel-content").append(`<span style='color: red'>${msg.user}</span>: <span>${msg.content}</span><br />`)
+        })
+    })
+</script>

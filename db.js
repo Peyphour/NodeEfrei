@@ -30,6 +30,9 @@ let database = {
   getUser: (name, callback) => {
     this.db.get('SELECT * FROM users WHERE username = ?', [name], callback)
   },
+  getChannel: (name, callback) => {
+    this.db.get('SELECT * FROM channels WHERE channel = ?', [name], callback)
+  },
   getUserByToken: (token, callback) => {
     this.db.get('SELECT * FROM users WHERE token = ?', [token], callback)
   },
@@ -37,7 +40,7 @@ let database = {
     this.db.run('INSERT INTO messages VALUES (?,?,?)', [user, channel, content])
   },
   getMessagesForChannel: (channel, callback) => {
-    this.db.all('SELECT * messages WHERE channel = ?', [channel], callback)
+    this.db.all('SELECT * FROM messages WHERE channel = ?', [channel], callback)
   }
 }
 

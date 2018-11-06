@@ -1,3 +1,6 @@
+<label for="new-channel">New channel:</label>
+<input type="text" id="new-channel"/>
+<input type="button" value="Ok" onclick="createChannel()"/>
 <h2>Channels:</h2>
 <div id="channels"></div>
 <script src="/socket.io/socket.io.js"></script>
@@ -6,19 +9,36 @@
 <script>
     let userinfos, channels = [];
     $(document).ready(() => {
-      if(document.cookie.length === 0)
-        window.location = '/'
+        if (document.cookie.length === 0) {
+            window.location = '/'
+        }
         const socket = io();
         socket.emit('login', Cookies.get('token'))
-        socket.emit('channels-request')
         socket.on('user info', (msg) => {
-          userinfos = msg;
+            userinfos = msg;
         })
         socket.on('channels', (msg) => {
-          console.log(msg);
-          for(let channel of msg) {
-            $("#channels").append(`<a href='/chat/${channel.channel}'>${channel.channel}</a><br />`)
-          }
+            $("#channels").html('')
+            for (let channel of msg) {
+                $("#channels").append(`<a href='/chat/${channel.channel}'>${channel.channel}</a><br />`)
+            }
         })
+        setInterval(() => {
+            socket.emit('channels-request')
+        }, 1000)
     })
+
+    function createChannel () {
+        let name = $("#new-channel").val();
+        $.ajax({
+            url: '/chat/channels',
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({name: name}),
+            headers: {
+                token: Cookies.get('token')
+            }
+        });
+    }
 </script>

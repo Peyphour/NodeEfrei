@@ -9,7 +9,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/:channel', (req, res, next) => {
-  res.render('channel', {channel: req.params.channel})
+  res.render('channel', { channel: req.params.channel })
 })
 
 router.post('/login', (req, res, next) => {
@@ -43,8 +43,13 @@ router.get('/channels', (req, res, next) => {
 })
 
 router.post('/channels', (req, res, next) => {
-  db.createChannel(req.body.channel, 'test')
-  res.sendStatus(201)
+  db.getUserByToken(req.headers.token, (err, row) => {
+    if (err) {
+      res.sendStatus(500)
+    }
+    db.createChannel(req.body.name, row.username)
+    res.sendStatus(201)
+  })
 })
 
 router.get('/channel/:name/messages', (req, res, next) => {
