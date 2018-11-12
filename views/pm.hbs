@@ -11,6 +11,7 @@
     let socket;
     $(document).ready(() => {
         socket = io();
+        socket.emit('login', Cookies.get('token'))
         setInterval(() => {
             socket.emit('pm-request', {
                 token: Cookies.get('token'),

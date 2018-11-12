@@ -2,69 +2,47 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const randstring = require('randomstring')
-const db = require('../db')
+const db = require('../app/db')
 
 router.get('/', (req, res, next) => {
   res.render('chat', {})
 })
 
-router.post('/login', (req, res, next) => {
-  db.getUser(req.body.username, (err, row) => {
-    if (err) {
-      res.sendStatus(403)
-    } else {
-      const user = row
-      if (user === undefined) {
-        res.sendStatus(403)
-      } else {
-        bcrypt.compare(req.body.password, user.password, (err, result) => {
-          if (result === true) {
-            const token = randstring.generate(20)
-            db.setTokenForUser(user.username, token)
-            res.cookie('token', token)
-            res.send(200)
-          }
-        })
-      }
+router.post('/login', async (req, res, next) => {
+  console.log(req.body)
+  const user = await db.getUser(req.body.username)
+  console.log(user)
+  bcrypt.compare(req.body.password, user.password, async (err, result) => {
+    if (result === true) {
+      const token = randstring.generate(20)
+      await db.setTokenForUser(user.username, token)
+      res.cookie('token', token)
+      res.send(200)
     }
   })
 })
 
-router.get('/channels', (req, res, next) => {
-  db.getChannels((err, rows) => {
-    if (err) {
-      res.sendStatus(500)
-    }
-    res.send(rows)
-  })
+router.get('/channels', async (req, res, next) => {
+  res.send(await db.getChannels())
 })
 
-router.post('/channels', (req, res, next) => {
-  db.getUserByToken(req.headers.token, (err, row) => {
-    if (err) {
-      res.sendStatus(500)
-    }
-    db.createChannel(req.body.name, row.username)
-    res.sendStatus(201)
-  })
+router.post('/channels', async (req, res, next) => {
+  const user = await db.getUserByToken(req.headers.token)
+  await db.createChannel(req.body.name, user.username)
+  res.sendStatus(201)
 })
 
-router.get('/channel/:name/messages', (req, res, next) => {
-  db.getMessagesForChannel(req.params.name, (err, rows) => {
-    if (err) {
-      res.sendStatus(500)
-    }
-    res.send(rows)
-  })
+router.get('/channel/:name/messages', async (req, res, next) => {
+  res.send(await db.getMessagesForChannel(req.params.name))
 })
 
-router.post('/channel/:name/messages', (req, res, next) => {
-  db.createMessage('test', req.params.name, req.body.message)
+router.post('/channel/:name/messages', async (req, res, next) => {
+  await db.createMessage('test', req.params.name, req.body.message)
   res.sendStatus(201)
 })
 
 router.get('/:channel', (req, res, next) => {
-  res.render('channel', { channel: req.params.channel })
+  res.render('channel', {channel: req.params.channel})
 })
 
 module.exports = router
