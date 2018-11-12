@@ -1,8 +1,44 @@
 body {
-  padding: 50px;
+  padding-top: 100px;
+  margin: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.navbar {
+    background: lightseagreen;
 }
+
+.nav-link , .navbar-brand {
+    color: #f4f4f4;
+    cursor: pointer;
+}
+
+.nav-link {
+    margin-right: 1em !important;
+}
+
+.nav-link:hover {
+    background: #f4f4f4;
+    color: #808080;
+}
+
+.navbar-collapse {
+    justify-content: flex-end;
+}
+
+.navbar-toggler {
+    background:#fff !important;
+}
+
+#login {
+    background-color: paleturquoise;
+}
+
+.signup-text {
+    margin-top: 10px;
+}
+
+body h3 {
+    color: darkcyan;
+}
+
