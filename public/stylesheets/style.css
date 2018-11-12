@@ -1,8 +1,52 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding-top: 100px;
+    margin: 0;
+    background-color: gainsboro !important;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.navbar {
+    background: darkslategray;
+}
+
+.nav-link , .navbar-brand {
+    color: #f4f4f4;
+    cursor: pointer;
+}
+
+.nav-link {
+    margin-right: 1em !important;
+}
+
+.nav-link:hover {
+    color: #808080;
+}
+
+.navbar-collapse {
+    justify-content: flex-end;
+}
+
+.navbar-toggler {
+    background:#fff !important;
+}
+
+.user-form {
+    background-color: paleturquoise;
+}
+
+.signup-text {
+    margin-top: 10px;
+}
+
+body h3 {
+    color: darkcyan;
+}
+
+table a {
+    color: cornflowerblue;
+}
+
+.spacer {
+    padding-top: 10px;
+    padding-bottom: 10px
 }

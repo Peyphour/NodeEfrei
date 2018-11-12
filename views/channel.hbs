@@ -1,8 +1,35 @@
-<h2>Channel {{channel}}</h2>
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg fixed-top ">
+    <a class="navbar-brand" href="/">Super duper chat</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse " id="navbarSupportedContent">
+        <ul class="navbar-nav mr-4">
+            <li class="nav-item">
+                <a class="nav-link" data-value="default" href="/chat">Chat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-value="login" href="/">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-<div id="channel-content"></div>
-<input type="text" id="msg" />
-<input type="button" value="Send" id="send" />
+<body>
+    <div class="user-form container shadow py-4" id="channel-content">
+
+        <h3>Channel: {{channel}}</h3>
+
+        <input type="text" id="msg" placeholder="Your message"/>
+        <input class="btn btn-outline-secondary" type="button" value="Send" id="send" />
+
+        <div class="spacer"></div>
+        <div id="channels"></div>
+    </div>
+</body>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -21,7 +48,7 @@
         socket.on('channel-message', (msg) => {
             console.log(msg)
             if (msg.channel === '{{channel}}')
-                $("#channel-content").append(`<span style='color: red'>${msg.user}</span>: <span>${msg.content}</span><br />`)
+                $("#channels").append(`<span style='color: red'>${msg.user}</span>: <span>${msg.content}</span><br />`)
         })
     })
 </script>
