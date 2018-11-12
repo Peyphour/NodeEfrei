@@ -36,6 +36,7 @@
 <script>
     $(document).ready(() => {
         const socket = io()
+        socket.emit('login', Cookies.get('token'))
         $("#send").click(() => {
             socket.emit('channel-message', {
                 token: Cookies.get('token'),
