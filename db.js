@@ -44,4 +44,6 @@ let database = {
   }
 }
 
+database.init()
+
 module.exports = database

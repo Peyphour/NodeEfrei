@@ -4,14 +4,8 @@ const bcrypt = require('bcrypt')
 const randstring = require('randomstring')
 const db = require('../db')
 
-const saltRounds = 10
-
 router.get('/', (req, res, next) => {
   res.render('chat', {})
-})
-
-router.get('/:channel', (req, res, next) => {
-  res.render('channel', { channel: req.params.channel })
 })
 
 router.post('/login', (req, res, next) => {
@@ -23,8 +17,8 @@ router.post('/login', (req, res, next) => {
       if (user === undefined) {
         res.sendStatus(403)
       } else {
-        bcrypt.compre(req.body.password, user.password, (req, res) => {
-          if (res === true) {
+        bcrypt.compare(req.body.password, user.password, (err, result) => {
+          if (result === true) {
             const token = randstring.generate(20)
             db.setTokenForUser(user.username, token)
             res.send({
@@ -70,11 +64,8 @@ router.post('/channel/:name/messages', (req, res, next) => {
   res.sendStatus(201)
 })
 
-router.post('/user', (req, res, next) => {
-  bcrypt.hash(req.body.password, saltRounds, (req, res) => {
-    db.createUser(req.body.username, res)
-    res.sendStatus(201)
-  })
+router.get('/:channel', (req, res, next) => {
+  res.render('channel', { channel: req.params.channel })
 })
 
 module.exports = router
