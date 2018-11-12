@@ -13,6 +13,9 @@ let database = {
       this.db.run('CREATE TABLE IF NOT EXISTS messages (user TEXT NOT NULL, channel TEXT NOT NULL, content TEXT NOT NULL,' +
         'FOREIGN KEY(user) REFERENCES users(username),' +
         'FOREIGN KEY(channel) REFERENCES channels(channel))')
+      this.db.run('CREATE TABLE IF NOT EXISTS private_messages (from_user TEXT NOT NULL, to_user TEXT NOT NULL, content TEXT NOT NULL,' +
+        'FOREIGN KEY(from_user) REFERENCES users(username),' +
+        'FOREIGN KEY(to_user) REFERENCES users(username))')
     })
   },
   getChannels: (callback) => {
@@ -41,6 +44,15 @@ let database = {
   },
   getMessagesForChannel: (channel, callback) => {
     this.db.all('SELECT * FROM messages WHERE channel = ?', [channel], callback)
+  },
+  getPmForUser: (user, callback) => {
+    this.db.all('SELECT * FROM private_messages WHERE to_user = ?', [user], callback)
+  },
+  getPmFromAndToUser: (fromUser, toUser, callback) => {
+    this.db.all('SELECT * FROM private_messages WHERE to_user = ? AND from_user = ?', [toUser, fromUser], callback)
+  },
+  createPm: (fromUser, toUser, content, callback) => {
+    this.db.run('INSERT INTO private_messages VALUES (?,?,?)', [fromUser, toUser, content], callback)
   }
 }
 

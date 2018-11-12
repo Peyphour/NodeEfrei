@@ -51,6 +51,46 @@ const initIO = (server) => {
         })
       })
     })
+    socket.on('pm-request', (msg) => {
+      db.getUserByToken(msg.token, (err, user) => {
+        if (err || !user) {
+          return
+        }
+        if (msg.user !== undefined) {
+          db.getPmFromAndToUser(msg.user, user.username, (err, msgs) => {
+            if (err || !user) {
+              console.log(err)
+              return
+            }
+            socket.emit('private-messages', msgs)
+          })
+        } else {
+          db.getPmForUser(user.username, (err, msgs) => {
+            if (err || !user) {
+              return
+            }
+            socket.emit('private-messages', msgs)
+          })
+        }
+      })
+    })
+    socket.on('pm-message', (msg) => {
+      db.getUserByToken(msg.token, (err, from) => {
+        if (err || !from) {
+          return
+        }
+        db.getUser(msg.user, (err1, to) => {
+          if (err1 || !from) {
+            return
+          }
+          db.createPm(from.username, to.username, msg.content, () => {
+            db.getPmFromAndToUser(from.username, to.username, (err, msg) => {
+              socket.emit('private-messages', msg)
+            })
+          })
+        })
+      })
+    })
   })
 }
 

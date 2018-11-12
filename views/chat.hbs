@@ -3,6 +3,8 @@
 <input type="button" value="Ok" onclick="createChannel()"/>
 <h2>Channels:</h2>
 <div id="channels"></div>
+<h2>Private messages:</h2>
+<div id="pm"></div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -23,8 +25,19 @@
                 $("#channels").append(`<a href='/chat/${channel.channel}'>${channel.channel}</a><br />`)
             }
         })
+        socket.on('private-messages', (msgs) => {
+            $("#pm").html('')
+            let users = new Set()
+            for (let msg of msgs)
+                users.add(msg.from_user)
+            for (let user of users)
+                $("#pm").append(`<a href=/pm/${user}>${user}</a><br />`)
+        })
         setInterval(() => {
             socket.emit('channels-request')
+            socket.emit('pm-request', {
+                token: Cookies.get('token')
+            })
         }, 1000)
     })
 

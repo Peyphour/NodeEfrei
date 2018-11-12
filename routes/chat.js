@@ -24,9 +24,8 @@ router.post('/login', (req, res, next) => {
         if (user.password === sha1(req.body.password)) {
           const token = randstring.generate(20)
           db.setTokenForUser(user.username, token)
-          res.send({
-            token: token
-          })
+          res.cookie('token', token)
+          res.sendStatus(200)
         }
       }
     }
