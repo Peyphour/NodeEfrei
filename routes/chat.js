@@ -42,7 +42,7 @@ router.post('/channel/:name/messages', async (req, res, next) => {
 })
 
 router.get('/:channel', (req, res, next) => {
-  res.render('channel', {channel: req.params.channel})
+  res.render('channel', { channel: req.params.channel })
 })
 
 module.exports = router
