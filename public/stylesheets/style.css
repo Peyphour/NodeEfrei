@@ -1,11 +1,12 @@
 body {
-  padding-top: 100px;
-  margin: 0;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding-top: 100px;
+    margin: 0;
+    background-color: gainsboro !important;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 .navbar {
-    background: lightseagreen;
+    background: darkslategray;
 }
 
 .nav-link , .navbar-brand {
@@ -18,7 +19,6 @@ body {
 }
 
 .nav-link:hover {
-    background: #f4f4f4;
     color: #808080;
 }
 
@@ -30,7 +30,7 @@ body {
     background:#fff !important;
 }
 
-#login {
+.user-form {
     background-color: paleturquoise;
 }
 
@@ -42,3 +42,11 @@ body h3 {
     color: darkcyan;
 }
 
+table a {
+    color: cornflowerblue;
+}
+
+.spacer {
+    padding-top: 10px;
+    padding-bottom: 10px
+}

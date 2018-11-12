@@ -1,8 +1,36 @@
-<label for="new-channel">New channel:</label>
-<input type="text" id="new-channel"/>
-<input type="button" value="Ok" onclick="createChannel()"/>
-<h2>Channels:</h2>
-<div id="channels"></div>
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg fixed-top ">
+    <a class="navbar-brand" href="/">Super duper chat</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse " id="navbarSupportedContent">
+        <ul class="navbar-nav mr-4">
+            <li class="nav-item">
+                <a class="nav-link" data-value="default" href="/chat">Chat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-value="login" href="/">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<body>
+    <div class="user-form container shadow py-4">
+        <label for="new-channel">Create new channel:</label>
+        <input type="text" id="new-channel" placeholder="Channel name"/>
+        <input class = "btn btn-outline-secondary" type="button" value="Ok" onclick="createChannel()"/>
+        <div class="spacer"></div>
+        <h3>Available channels:</h3>
+        <table class="table table-striped table-dark">
+            <tbody id="channels">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -20,7 +48,7 @@
         socket.on('channels', (msg) => {
             $("#channels").html('')
             for (let channel of msg) {
-                $("#channels").append(`<a href='/chat/${channel.channel}'>${channel.channel}</a><br />`)
+                $("#channels").append(`<tr><td scope="col"><a href='/chat/${channel.channel}'>${channel.channel}</a></td></tr>`)
             }
         })
         setInterval(() => {
