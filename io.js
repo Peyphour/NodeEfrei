@@ -7,6 +7,10 @@ const initIO = (server) => {
   io.on('connection', function (socket) {
     socket.on('login', (msg) => {
       db.getUserByToken(msg, (err, row) => {
+        if (err || !row) {
+          console.log(`User not found for token ${msg}`)
+          return
+        }
         socket.emit('user info', row)
         socket.emit('online', online)
         online[socket.id] = row.username

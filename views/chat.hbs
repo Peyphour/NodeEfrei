@@ -34,26 +34,26 @@
                 users.add(msg.from_user)
             for (let user of users)
                 $("#pm").append(`<a href=/pm/${user}>${user}</a><br />`)
-            socket.on('online', (msg) => {
-                for (let key in msg) {
-                    if ($(`#user-${msg[key]}`).length === 0)
-                        $("#online").append(`<span id='user-${msg[key]}'><a href='/pm/${msg[key]}'>${msg[key]}</a><br /></span>`)
-                }
-            })
-            socket.on('user-login', (msg) => {
-                if ($(`#user-${msg.user}`).length === 0)
-                    $("#online").append(`<span id='user-${msg.user}'><a href='/pm/${msg.user}'>${msg.user}</a><br /></span>`)
-            })
-            socket.on('user-logout', (msg) => {
-
-            })
-            setInterval(() => {
-                socket.emit('channels-request')
-                socket.emit('pm-request', {
-                    token: Cookies.get('token')
-                })
-            }, 1000)
         })
+        socket.on('online', (msg) => {
+            for (let key in msg) {
+                if ($(`#user-${msg[key]}`).length === 0)
+                    $("#online").append(`<span id='user-${msg[key]}'><a href='/pm/${msg[key]}'>${msg[key]}</a><br /></span>`)
+            }
+        })
+        socket.on('user-login', (msg) => {
+            if ($(`#user-${msg.user}`).length === 0)
+                $("#online").append(`<span id='user-${msg.user}'><a href='/pm/${msg.user}'>${msg.user}</a><br /></span>`)
+        })
+        socket.on('user-logout', (msg) => {
+            $(`#user-${msg.user}`).remove()
+        })
+        setInterval(() => {
+            socket.emit('channels-request')
+            socket.emit('pm-request', {
+                token: Cookies.get('token')
+            })
+        }, 1000)
     });
 
     function createChannel () {
