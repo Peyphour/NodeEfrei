@@ -1,0 +1,45 @@
+<h1>{{title}}</h1>
+<p>New account form</p>
+
+<form>
+    <label for="username">Username:</label>
+    <input type="text" id="username" />
+    <label for="password">Password:</label>
+    <input type="password" id="password" />
+    <label for="password">Password confirmation:</label>
+    <input type="password" id="password_confirmation" />
+    <input type="button" value="Create account" onclick="createAccount()" />
+</form>
+
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    function createAccount() {
+      const username = $("#username").val();
+      const password = $("#password").val();
+      const password_confirmation = $("#password_confirmation").val();
+
+      if (password !== password_confirmation) {
+          alert('Wrong password confirmation')
+      }
+      else if (password === '') {
+          alert('Password can\'t be empty')
+      }
+      $.ajax({
+          url: '/signup',
+          method: 'POST',
+          data: JSON.stringify({
+            username: username,
+            password: password
+          }),
+          dataType: 'json',
+          contentType: 'application/json',
+          sucess: (data) => {
+            window.location.replace('index')
+          }
+          //error: (jqxhr, text, err) => {
+              // alert('User creation failed: ' + jqxhr.getResponseHeader())
+              //alert('User creation failed: ' + text) 
+          //}
+      })
+    }
+</script>

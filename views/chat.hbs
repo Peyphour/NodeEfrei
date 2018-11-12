@@ -5,6 +5,8 @@
 <div id="channels"></div>
 <h2>Private messages:</h2>
 <div id="pm"></div>
+<h2>Online:</h2>
+<div id="online"></div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -32,6 +34,18 @@
                 users.add(msg.from_user)
             for (let user of users)
                 $("#pm").append(`<a href=/pm/${user}>${user}</a><br />`)
+        socket.on('online', (msg) => {
+            for (let key in msg) {
+                if ($(`#user-${msg[key]}`).length === 0)
+                    $("#online").append(`<span id='user-${msg[key]}'><a href='/pm/${msg[key]}'>${msg[key]}</a><br /></span>`)
+            }
+        })
+        socket.on('user-login', (msg) => {
+            if ($(`#user-${msg.user}`).length === 0)
+                $("#online").append(`<span id='user-${msg.user}'><a href='/pm/${msg.user}'>${msg.user}</a><br /></span>`)
+        })
+        socket.on('user-logout', (msg) => {
+
         })
         setInterval(() => {
             socket.emit('channels-request')
