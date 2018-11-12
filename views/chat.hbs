@@ -72,7 +72,7 @@
         socket.on('online', (msg) => {
             for (let key in msg) {
                 if ($(`#user-${msg[key]}`).length === 0)
-                    $("#online").append(`<tr><td scope="col"><a href='/pm/${msg[key]}'>${msg[key]}'>$msg[key]</a></td></tr>`)
+                    $("#online").append(`<tr><td scope="col"><a href='/pm/${msg[key]}'>${msg[key]}</a></td></tr>`)
                     //  $("#online").append(`<span id='user-${msg[key]}'><a href='/pm/${msg[key]}'>${msg[key]}</a><br /></span>`)
             }
         })
