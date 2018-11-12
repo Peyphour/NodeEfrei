@@ -3,6 +3,8 @@
 <input type="button" value="Ok" onclick="createChannel()"/>
 <h2>Channels:</h2>
 <div id="channels"></div>
+<h2>Private messages:</h2>
+<div id="pm"></div>
 <h2>Online:</h2>
 <div id="online"></div>
 <script src="/socket.io/socket.io.js"></script>
@@ -25,6 +27,13 @@
                 $("#channels").append(`<a href='/chat/${channel.channel}'>${channel.channel}</a><br />`)
             }
         })
+        socket.on('private-messages', (msgs) => {
+            $("#pm").html('')
+            let users = new Set()
+            for (let msg of msgs)
+                users.add(msg.from_user)
+            for (let user of users)
+                $("#pm").append(`<a href=/pm/${user}>${user}</a><br />`)
         socket.on('online', (msg) => {
             for (let key in msg) {
                 if ($(`#user-${msg[key]}`).length === 0)
@@ -40,6 +49,9 @@
         })
         setInterval(() => {
             socket.emit('channels-request')
+            socket.emit('pm-request', {
+                token: Cookies.get('token')
+            })
         }, 1000)
     })
 

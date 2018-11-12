@@ -22,13 +22,9 @@
             username: username,
             password: password
           }),
-          dataType: 'json',
           contentType: 'application/json',
           success: (data) => {
-              if(data.token) {
-                  document.cookie = `token=${data.token}`
-                  window.location = '/chat'
-              }
+              window.location = '/chat'
           },
           error: (jqxhr, text, err) => {
               alert('Login failed ' + text)
