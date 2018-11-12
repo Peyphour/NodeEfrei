@@ -67,7 +67,7 @@
             for (let msg of msgs)
                 users.add(msg.from_user)
             for (let user of users)
-                $("#pm").append(`<tr><td scope="col"><a href='/chat/${user}'>${user}</a></td></tr>`)
+                $("#pm").append(`<tr><td scope="col"><a href='/pm/${user}'>${user}</a></td></tr>`)
         })
         socket.on('online', (msg) => {
             for (let key in msg) {
