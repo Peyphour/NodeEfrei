@@ -49,7 +49,7 @@ let database = {
     this.db.all('SELECT * FROM private_messages WHERE to_user = ?', [user], callback)
   },
   getPmFromAndToUser: (fromUser, toUser, callback) => {
-    this.db.all('SELECT * FROM private_messages WHERE to_user = ? AND from_user = ?', [toUser, fromUser], callback)
+    this.db.all('SELECT * FROM private_messages WHERE (to_user = ? AND from_user = ?) OR (to_user = ? AND from_user = ?)', [toUser, fromUser, fromUser, toUser], callback)
   },
   createPm: (fromUser, toUser, content, callback) => {
     this.db.run('INSERT INTO private_messages VALUES (?,?,?)', [fromUser, toUser, content], callback)

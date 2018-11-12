@@ -11,10 +11,12 @@
     let socket;
     $(document).ready(() => {
         socket = io();
-        socket.emit('pm-request', {
-            token: Cookies.get('token'),
-            user: '{{user}}'
-        })
+        setInterval(() => {
+            socket.emit('pm-request', {
+                token: Cookies.get('token'),
+                user: '{{user}}'
+            })
+        }, 1000)
         socket.on('private-messages', (msgs) => {
             $("#chat").html('')
             for (let msg of msgs) {
