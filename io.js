@@ -3,12 +3,23 @@ const debug = require('debug')('nodeefrei:server')
 
 const initIO = (server) => {
   const io = require('socket.io')(server)
+  let online = {}
   io.on('connection', function (socket) {
     socket.on('login', (msg) => {
-      debug(`got token ${msg}`)
       db.getUserByToken(msg, (err, row) => {
         socket.emit('user info', row)
+        socket.emit('online', online)
+        online[socket.id] = row.username
+        io.emit('user-login', {
+          user: row.username
+        })
       })
+    })
+    socket.on('disconnect', function () {
+      io.emit('user-logout', {
+        user: online[socket.id]
+      })
+      online[socket.id] = undefined
     })
     socket.on('channels-request', () => {
       db.getChannels((err, rows) => {
